@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>PMO Copilot</title>
+    <style>
+        body {
+            font-family: Arial;
+            text-align: center;
+            margin-top: 50px;
+        }
+        textarea {
+            width: 300px;
+            height: 80px;
+            margin: 10px;
+        }
+        button {
+            padding: 10px 20px;
+            background-color: blue;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+        #result {
+            margin-top: 20px;
+            font-weight: bold;
+            color: green;
+        }
+    </style>
+</head>
+<body>
+ 
+    <h1>🤖 PMO Copilot</h1>
+ 
+    <h3>Enter SOW</h3>
+    <textarea id="sow"></textarea>
+ 
+    <h3>Enter Meeting Notes</h3>
+    <textarea id="meeting"></textarea>
+ 
+    <br>
+    <button onclick="analyze()">Analyze</button>
+ 
+    <h3>Result:</h3>
+    <p id="result">No result yet</p>
+ 
+    <script>
+        async function analyze() {
+            const sow = document.getElementById("sow").value;
+            const meeting = document.getElementById("meeting").value;
+ 
+            const response = await fetch("http://127.0.0.1:8000/analyze", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json"
+                },
+                body: JSON.stringify({ sow, meeting })
+            });
+ 
+            const data = await response.json();
+            document.getElementById("result").innerText = data.change_requests;
+        }
+    </script>
+ 
+</body>
+</html>
